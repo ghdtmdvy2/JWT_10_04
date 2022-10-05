@@ -101,8 +101,10 @@ class JwtTests {
 
         System.out.println("accessToken : " + accessToken);
 
+        // 변조 되었는지 secretKey로 확인. ( JWT 검증 과정 )
         assertThat(jwtProvider.verify(accessToken)).isTrue();
 
+        // JWT 데이터를 복호화 하기. ( JWT 메인 데이터 가져오기 )
         Map<String, Object> claimsFromToken = jwtProvider.getClaims(accessToken);
         System.out.println("claimsFromToken : " + claimsFromToken);
     }
