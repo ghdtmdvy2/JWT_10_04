@@ -32,4 +32,28 @@ public class JwtProvider {
                 .signWith(getSecretKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
+
+    public boolean verify(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSecretKey())
+                    .build()
+                    .parseClaimsJws(token);
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public Map<String, Object> getClaims(String token) {
+        String body = Jwts.parserBuilder()
+                .setSigningKey(getSecretKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("body", String.class);
+
+        return Util.json.toMap(body);
+    }
 }
